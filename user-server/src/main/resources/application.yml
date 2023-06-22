@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.113.225.98:3306/darach?useSSL=false
+    username: root
+    password: '!Tufirewall123..'
+  servlet:
+    multipart:
+      max-file-size: 100MB
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto
+logging:
+  level:
+    io:
+      github:
+        franzli347:
+          darach:
+            mapper: debug
+
+upload:
+  dir: D:/upload
