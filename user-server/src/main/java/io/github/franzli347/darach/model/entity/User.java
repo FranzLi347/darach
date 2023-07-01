@@ -1,6 +1,5 @@
 package io.github.franzli347.darach.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,54 +10,46 @@ import java.util.Date;
 
 /**
  * 
- * @TableName vedio_path
+ * @TableName user
  */
-@TableName(value ="vedio_path")
+@TableName(value ="user")
 @Data
-public class VedioPath implements Serializable {
+public class User implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     /**
-     * animate id
+     * 邮箱
      */
-    private Integer animateId;
+    private String email;
 
     /**
-     * 集数
+     * 密码
      */
-    private String episode;
-
-
-    private String fileName;
+    private String password;
 
     /**
-     * oss ID
+     * 状态 0:正常 1:待审核 2:封禁
      */
-    private Integer ossId;
+    private String status;
 
     /**
-     * bucket 名称
+     * 
      */
-    private String bucketName;
+    private Date createTime;
 
     /**
-     * 更新时间
+     * 
      */
     private Date updateTime;
 
     /**
-     * 插入时间
+     * 
      */
-    private Date insertTime;
-
-    /**
-     * 是否删除
-     */
-    private String isDelete;
+    private String idDelete;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

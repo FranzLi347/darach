@@ -13,11 +13,13 @@ import io.github.franzli347.darach.model.vo.AnimateVo;
 import io.github.franzli347.darach.model.vo.PageInfoVo;
 import io.github.franzli347.darach.service.AnimateService;
 import io.github.franzli347.darach.service.VedioPathService;
+import io.github.franzli347.darach.utils.XxlJobTrigger;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,16 +35,18 @@ public class AnimateController {
     @Resource
     VedioPathService vedioPathService;
 
+    @Resource
+    XxlJobTrigger xxlJobTrigger;
+
     @PostMapping("/list")
-    public ResponseEntity<PageInfoVo<?>> list(@RequestBody PageRequestEntity entity) throws Exception{
+    public ResponseEntity<PageInfoVo<?>> list(@RequestBody PageRequestEntity entity) {
         Page<Animate> p = new Page<>(entity.getCurrent(), entity.getPageSize());
         QueryWrapper<Animate> wrapper = new QueryWrapper<>();
-//        Thread.sleep(5000);
         //if not contain 'order by' in sql, the order by will be ignored
         wrapper.orderBy(StrUtil.isNotBlank(entity.getSortField()),
                 CommonConstant.SORT_ORDER_ASC.equals(entity.getSortOrder()),
                 entity.getSortField());
-        animateService.page(p,wrapper);
+        animateService.page(p, wrapper);
         PageInfoVo<List<?>> pageInfoVo = new PageInfoVo<>();
         BeanUtils.copyProperties(p, pageInfoVo);
         // convert entity to vo
@@ -60,18 +64,7 @@ public class AnimateController {
         Long episodeNum = vedioPathService.lambdaQuery()
                 .eq(VedioPath::getAnimateId, id)
                 .count();
-        return ResponseEntity.ok(episodeNum);
-    }
-
-    @GetMapping("/vedio/{id}/{episode}")
-    public ResponseEntity<List<?>> getM3U8Path(@PathVariable Integer id,@PathVariable Integer episode) {
-        List<VedioPath> vedioPathList = vedioPathService.lambdaQuery()
-                .eq(VedioPath::getAnimateId, id)
-                .eq(VedioPath::getEpisode, episode)
-                .list();
-        //todo convert to vo
-        return ResponseEntity.ok(vedioPathList);
-    }
+        return ResponseEntity.ok(episodeNum);}
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<AnimateVo> getDetail(@PathVariable Integer id) {
@@ -82,18 +75,23 @@ public class AnimateController {
     }
 
     @PutMapping
-    public ResponseEntity<String> add(@RequestBody AnimateCreateDto dto) {
+    public ResponseEntity<String> addNewAnimate(@RequestBody AnimateCreateDto dto) {
         Animate animate = new Animate();
         BeanUtils.copyProperties(dto, animate);
         animateService.save(animate);
         List<EpisodeDto> episodeList = dto.getEpisodeList();
+        List<VedioPath> insertData = new ArrayList<>();
         for (EpisodeDto episodeDto : episodeList) {
             VedioPath vedioPath = new VedioPath();
-            BeanUtils.copyProperties(episodeDto, vedioPath);
             vedioPath.setAnimateId(animate.getId());
-            vedioPathService.save(vedioPath);
+            vedioPath.setFileName(episodeDto.getFileName());
+            xxlJobTrigger.triggerJob(episodeDto.getFileName());
+            vedioPath.setEpisode(String.valueOf(episodeDto.getEpisode()));
+            insertData.add(vedioPath);
         }
+        vedioPathService.saveBatch(insertData);
         return ResponseEntity.ok("success");
     }
+
 
 }

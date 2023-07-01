@@ -1,7 +1,0 @@
-server:
-  port: 8082
-spring:
-  data:
-    redis:
-      host: 47.113.225.98
-      password: '!tufirewall'

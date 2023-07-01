@@ -7,15 +7,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 
- * @TableName vedio_path
+ * @TableName oss_source
  */
-@TableName(value ="vedio_path")
+@TableName(value ="oss_source")
 @Data
-public class VedioPath implements Serializable {
+public class OssSource implements Serializable {
     /**
      * 
      */
@@ -23,42 +22,26 @@ public class VedioPath implements Serializable {
     private Integer id;
 
     /**
-     * animate id
+     * oss类型
      */
-    private Integer animateId;
+    private String type;
 
     /**
-     * 集数
+     * oss url
      */
-    private String episode;
-
-
-    private String fileName;
+    private String url;
 
     /**
-     * oss ID
+     * 
      */
-    private Integer ossId;
+    private String accessKey;
 
     /**
-     * bucket 名称
+     * 
      */
+    private String secertKey;
+
     private String bucketName;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    /**
-     * 插入时间
-     */
-    private Date insertTime;
-
-    /**
-     * 是否删除
-     */
-    private String isDelete;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

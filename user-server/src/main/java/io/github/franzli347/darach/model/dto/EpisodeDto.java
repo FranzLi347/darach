@@ -8,12 +8,9 @@ public class EpisodeDto {
     /**
      * 集数
      */
-    private String id;
+    private Integer episode;
 
-    /**
-     * m3u8文件路径
-     */
-    private String masterFileRPath;
+    private String fileName;
 
 }
 
