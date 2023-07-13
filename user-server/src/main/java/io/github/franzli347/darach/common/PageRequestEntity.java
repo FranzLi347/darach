@@ -1,9 +1,15 @@
 package io.github.franzli347.darach.common;
 
 import io.github.franzli347.darach.constant.CommonConstant;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PageRequestEntity {
     /**
      * 当前页号

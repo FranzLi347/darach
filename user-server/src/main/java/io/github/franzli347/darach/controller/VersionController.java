@@ -1,15 +1,21 @@
 package io.github.franzli347.darach.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/version")
+/**
+ * @author Franz
+ */
+@RequestMapping("/ver")
 @RestController
 public class VersionController {
 
-    @GetMapping
+    @Value("${version}")
+    String version;
+
+    @RequestMapping
     public String version(){
-        return "1.0beta";
+        return version;
     }
 }

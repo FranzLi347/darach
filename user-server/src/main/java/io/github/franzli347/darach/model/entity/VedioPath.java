@@ -10,14 +10,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
  * @TableName vedio_path
  */
-@TableName(value ="vedio_path")
+@TableName(value = "vedio_path")
 @Data
 public class VedioPath implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
@@ -27,23 +26,9 @@ public class VedioPath implements Serializable {
      */
     private Integer animateId;
 
-    /**
-     * 集数
-     */
     private String episode;
 
-
     private String fileName;
-
-    /**
-     * oss ID
-     */
-    private Integer ossId;
-
-    /**
-     * bucket 名称
-     */
-    private String bucketName;
 
     /**
      * 更新时间

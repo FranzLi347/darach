@@ -6,11 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "xxl-job")
-public class XxlJobProperties {
-
-    private String address;
-
-    private Integer jobId;
-
+@ConfigurationProperties(prefix = "capture-img")
+public class CaptureImgProperties {
+    private Boolean enable;
+    private Integer width;
+    private Integer height;
+    private String type;
 }

@@ -1,6 +1,7 @@
 package io.github.franzli347.darach.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.github.franzli347.darach.model.dto.AnimateCreateDto;
 import io.github.franzli347.darach.model.entity.Animate;
 
 /**
@@ -11,4 +12,6 @@ import io.github.franzli347.darach.model.entity.Animate;
 
 public interface AnimateService extends IService<Animate> {
 
+
+    Boolean addNewAnimate(AnimateCreateDto dto);
 }

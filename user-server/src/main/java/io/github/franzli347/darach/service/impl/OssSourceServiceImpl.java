@@ -1,20 +1,47 @@
 package io.github.franzli347.darach.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.github.franzli347.darach.model.entity.OssSource;
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.StrUtil;
+import io.github.franzli347.darach.config.minio.MinioProperties;
 import io.github.franzli347.darach.service.OssSourceService;
-import io.github.franzli347.darach.mapper.OssSourceMapper;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+
+import io.minio.http.Method;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 /**
-* @author franz
-* @description 针对表【oss_source】的数据库操作Service实现
-* @createDate 2023-06-28 17:24:52
-*/
+ * @author Franz
+ *
+ */
 @Service
-public class OssSourceServiceImpl extends ServiceImpl<OssSourceMapper, OssSource>
-    implements OssSourceService{
+public class OssSourceServiceImpl implements OssSourceService {
 
+
+    private final MinioClient minioClient;
+
+    private final MinioProperties minioProperties;
+
+    public OssSourceServiceImpl(MinioClient minioClient, MinioProperties minioProperties) {
+        this.minioClient = minioClient;
+        this.minioProperties = minioProperties;
+    }
+
+    @Override
+    @SneakyThrows
+    public String getTempUrl(String name) {
+        if (StrUtil.isBlankIfStr(name)) {
+            name = UUID.fastUUID().toString();
+        }
+        return minioClient
+                .getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                .bucket(minioProperties.getBucketName())
+                .object(name)
+                .method(Method.PUT)
+                .expiry(60 * 60 * 2)
+                .build());
+    }
 }
 
 

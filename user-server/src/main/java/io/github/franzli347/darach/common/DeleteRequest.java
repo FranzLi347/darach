@@ -5,6 +5,10 @@ import lombok.Data;
 import java.io.Serializable;
 
 
+/**
+ * @author Franz
+ * 删除请求
+ */
 @Data
 public class DeleteRequest implements Serializable {
     /**

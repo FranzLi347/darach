@@ -1,7 +1,9 @@
 package io.github.franzli347.darach.model.dto;
 
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -41,12 +43,12 @@ public class AnimateCreateDto {
     /**
      * 首播时间
      */
-    private Date premiereTime;
+    private LocalDateTime premiereTime;
 
     /**
      * 更新时间
      */
-    private Date renewalTime;
+    private LocalDateTime renewalTime;
 
     /**
      * 播放地址

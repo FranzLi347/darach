@@ -1,12 +1,21 @@
 package io.github.franzli347.darach.model.vo;
 
+import cn.zhxu.bs.bean.DbField;
+import cn.zhxu.bs.bean.SearchBean;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@SearchBean(
+        tables = "animate"
+)
 public class AnimateVo {
     /**
      * id
@@ -42,18 +51,24 @@ public class AnimateVo {
     /**
      * 制作公司
      */
-    private Integer companyName;
+    private String companyName;
 
     /**
      * 首播时间
      */
-    private Date premiereTime;
+    private LocalDateTime premiereTime;
 
     /**
      * 更新时间
      */
-    private Date renewalTime;
+    private LocalDateTime renewalTime;
 
+
+    /**
+     * 剧集数
+     */
+    @DbField("select count(*) from vedio_path where animate_id = animate.id")
+    private Integer episodeNum;
 
 
     @TableField(exist = false)

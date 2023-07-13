@@ -1,9 +1,13 @@
-package io.github.franzli347.darach.config;
+package io.github.franzli347.darach.config.minio;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Franz
+ * Minio配置
+ */
 @Data
 @Component
 @ConfigurationProperties(prefix = "minio")

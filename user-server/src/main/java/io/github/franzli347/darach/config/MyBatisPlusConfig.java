@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+/**
+ * @author Franz
+ * mybatis 配置
+ */
 @Configuration
 @MapperScan("io.github.franzli347.darach.mapper")
 public class MyBatisPlusConfig {

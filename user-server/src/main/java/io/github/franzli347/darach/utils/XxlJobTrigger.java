@@ -2,7 +2,9 @@ package io.github.franzli347.darach.utils;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
-import io.github.franzli347.darach.config.MinioProperties;
+import io.github.franzli347.darach.constant.ErrorCode;
+import io.github.franzli347.darach.config.minio.MinioProperties;
+import io.github.franzli347.darach.exception.XxlJobException;
 import io.github.franzli347.darach.model.entity.JobParam;
 
 import java.util.HashMap;
@@ -12,7 +14,7 @@ public class XxlJobTrigger{
     private String address;
     private Integer jobId;
 
-    private MinioProperties minioProperties;
+    private final MinioProperties minioProperties;
 
     public XxlJobTrigger(String address, Integer jobId, MinioProperties minioProperties) {
         this.address = address;
@@ -34,7 +36,11 @@ public class XxlJobTrigger{
         jobParam.setFileName(fileName);
         paramMap.put("executorParam", JSONUtil.toJsonStr(jobParam));
         paramMap.put("addressList", "");
-        return HttpUtil.post(triggerUrl, paramMap, 10000);
+        try{
+            return HttpUtil.post(triggerUrl, paramMap, 10000);
+        }catch (Exception e){
+            throw new XxlJobException(ErrorCode.SYSTEM_ERROR,"触发任务失败");
+        }
     }
 
     private static String addSplit4url(String url) {
