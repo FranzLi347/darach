@@ -5,6 +5,7 @@ import io.github.franzli347.darach.config.CaptureImgProperties;
 import io.github.franzli347.darach.model.dto.UserDto;
 import io.github.franzli347.darach.service.UserService;
 import io.github.franzli347.darach.utils.AccessLimit;
+import io.github.franzli347.darach.utils.EncryptController;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class UserController {
     }
 
     @PutMapping
+    @EncryptController(requestEncrypt = true, responseEncrypt = true)
     public Boolean userRegister(@RequestBody UserDto dto) {
         return userService.userRegister(dto);
     }

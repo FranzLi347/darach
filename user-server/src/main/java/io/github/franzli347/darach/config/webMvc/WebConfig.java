@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Resource
     AccessLimitInterceptor accessLimitInterceptor;
 
+
     @Override
     public void addCorsMappings(@NotNull CorsRegistry registry) {
         if (Boolean.FALSE.equals(corsProperties.getEnabled())) {

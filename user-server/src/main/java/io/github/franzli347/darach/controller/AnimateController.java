@@ -6,6 +6,7 @@ import cn.zhxu.bs.util.MapUtils;
 import io.github.franzli347.darach.model.dto.AnimateCreateDto;
 import io.github.franzli347.darach.model.vo.AnimateVo;
 import io.github.franzli347.darach.service.AnimateService;
+import io.github.franzli347.darach.utils.EncryptController;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,8 @@ public class AnimateController {
         return beanSearcher.searchCount(AnimateVo.class, Map.of("id",id));
     }
 
-    @GetMapping("detail")
+    @GetMapping("/detail")
+    @EncryptController(responseEncrypt = true)
     public AnimateVo getDetail(Integer id) {
         return beanSearcher.searchFirst(AnimateVo.class, Map.of("id",id));
     }

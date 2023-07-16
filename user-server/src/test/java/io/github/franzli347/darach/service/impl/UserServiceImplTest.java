@@ -8,6 +8,7 @@ import io.github.franzli347.darach.model.dto.UserDto;
 import io.github.franzli347.darach.utils.PasswordEncryptUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.objectweb.asm.Handle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,24 +16,24 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.OutputStream;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @EnableConfigurationProperties
-@SpringBootTest(classes = {LoginValidateChain.class, PasswordEncryptUtil.class, ValidatedCodeValidator.class, ICaptcha.class})
+@SpringBootTest(classes = {LoginValidateChain.class,
+        PasswordEncryptUtil.class,
+        Handle.class,
+        ICaptcha.class
+})
 class UserServiceImplTest {
 
     private UserServiceImpl userServiceImplUnderTest;
-
     @Autowired
     private LoginValidateChain loginValidateChain;
-
     @Autowired
     private PasswordEncryptUtil passwordEncryptUtil;
-
     @Autowired
     private ValidatedCodeValidator validatedCodeValidator;
     @Autowired
@@ -52,9 +53,8 @@ class UserServiceImplTest {
     void testValidatedCodeImg() {
         // Setup
         when(userServiceImplUnderTest.redisTemplate.opsForValue()).thenReturn(null);
-        when(userServiceImplUnderTest.redisTemplate.opsForValue().set(anyString(), anyString(), anyLong(), any(TimeUnit.class))).thenReturn(null);
-        when(userServiceImplUnderTest.captcha.getCode()).thenReturn("result");
-        when(userServiceImplUnderTest.captcha.getCode()).thenReturn("result");
+        doNothing().when(userServiceImplUnderTest.redisTemplate.opsForValue()).set(any(),any());
+        when(userServiceImplUnderTest.captcha.getCode()).thenReturn("123455");
 
         // Run the test
         final Map<String, Object> result = userServiceImplUnderTest.validatedCodeImg();

@@ -13,7 +13,6 @@ import java.util.Map;
 public class XxlJobTrigger{
     private String address;
     private Integer jobId;
-
     private final MinioProperties minioProperties;
 
     public XxlJobTrigger(String address, Integer jobId, MinioProperties minioProperties) {

@@ -29,12 +29,10 @@ public class UserNameValidator extends AbstractHandler {
     public void handle(Object obj,Boolean preventNext){
         UserDto dto = (UserDto) obj;
         String email = dto.getEmail();
-
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getEmail, email);
         Optional.ofNullable(mapper.selectOne(wrapper))
                 .orElseThrow(() -> new BusinessException(ErrorCode.USERNAME_ERROR));
-
         super.handle(obj,preventNext);
     }
 }
