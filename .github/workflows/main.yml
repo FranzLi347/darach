@@ -1,0 +1,25 @@
+name: GraalVM build
+run-name: ${{ github.actor }} GraalVM build GitHub Actions 🚀
+on: [push,pull_request]
+
+jobs:
+  build:
+    name: Build GraalVM Image
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '17.0.7'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: check env
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          native-image --version
+          cd user-server
+      - name: compile with mvn 
+        run: mvn -Pnative package
