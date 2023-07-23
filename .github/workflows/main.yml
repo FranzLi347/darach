@@ -21,4 +21,4 @@ jobs:
           java --version
           native-image --version
       - name: compile with mvn 
-        run: mvn -Pnative package -Dmaven.test.skip=true
+        run: mvn native:compile-no-fork -Dmaven.test.skip=true
