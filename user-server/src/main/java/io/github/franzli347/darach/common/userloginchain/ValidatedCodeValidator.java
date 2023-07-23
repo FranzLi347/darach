@@ -24,7 +24,7 @@ import java.util.Optional;
 public class ValidatedCodeValidator extends AbstractHandler {
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
     @Resource
     private CaptureImgProperties captureImgProperties;
 

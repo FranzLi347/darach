@@ -9,6 +9,7 @@ import io.github.franzli347.darach.service.AnimateService;
 import io.github.franzli347.darach.utils.EncryptController;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/animate")
+@Slf4j
 public class AnimateController {
 
     @Resource
@@ -27,8 +29,11 @@ public class AnimateController {
     BeanSearcher beanSearcher;
 
     @GetMapping
+    @EncryptController(responseEncrypt = true)
     public SearchResult<AnimateVo> query(HttpServletRequest request){
-        return beanSearcher.search(AnimateVo.class, MapUtils.flat(request.getParameterMap()));
+        SearchResult<AnimateVo> search = beanSearcher.search(AnimateVo.class, MapUtils.flat(request.getParameterMap()));
+        log.debug(String.valueOf(search));
+        return search;
     }
 
     @GetMapping("episodeNum")

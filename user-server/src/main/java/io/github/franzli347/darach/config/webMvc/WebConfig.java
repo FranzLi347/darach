@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
         }
         registry.addMapping(corsProperties.getPathPattern())
                 .allowCredentials(corsProperties.getAllowCredentials())
-                .allowedOriginPatterns(corsProperties.getAllowedOrigin())
+                .allowedOriginPatterns("*")
                 .allowedMethods(corsProperties.getAllowedMethods())
                 .allowedHeaders(corsProperties.getAllowedHeaders())
                 .exposedHeaders(corsProperties.getExposedHeaders());

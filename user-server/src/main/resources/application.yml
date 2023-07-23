@@ -60,7 +60,7 @@ sa-token:
 
 
 cors-config:
-    enabled: false
+    enabled: true
     allow-credentials: true
     allowed-headers: "*"
     allowed-methods: "*"
@@ -98,5 +98,11 @@ capture-img:
   width: 100
   height: 100
 
+rsa:
+  public-key-path: rsa/public_key.pem
+  private-key-path: rsa/private_key.pem
+
+server:
+  port: 12334
 
 version: 1.0beta

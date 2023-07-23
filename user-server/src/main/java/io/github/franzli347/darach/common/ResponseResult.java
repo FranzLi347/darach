@@ -13,7 +13,7 @@ public class ResponseResult<T> {
     String msg;
     T data;
 
-    public static <E> ResponseResult<E> success(String msg,E data){
+    public static <E> ResponseResult<E> success(String msg, E data){
         return new ResponseResult<E>(ErrorCode.SUCCESS.getCode(),msg,data);
     }
 
