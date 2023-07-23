@@ -20,5 +20,6 @@ jobs:
           echo "JAVA_HOME: $JAVA_HOME"
           java --version
           native-image --version
+          cd user-server
       - name: compile with mvn 
         run: mvn -Pnative package
