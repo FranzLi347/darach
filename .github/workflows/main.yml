@@ -1,60 +1,59 @@
-name: build-native-image
+name: native-image-compile
 
-on:
-  push:
-    paths-ignore:
-      - "docs/**"
-    branches:
-      - master
+on: [push]
 
 jobs:
-  build:
-    name: ${{ matrix.version }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        version: [latest, dev, '21.3.0']
-        os: [ macos-latest, windows-latest, ubuntu-latest]
-
+  native-image-compile-on-host:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
+    - uses: actions/checkout@v3
 
-      - uses: graalvm/setup-graalvm@v1
-        with:
-          version: ${{ matrix.version }}
-          java-version: '17'
-          components: 'native-image'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Cache SDKMAN installation
+      uses: actions/cache@v3
+      with:
+        path: ~/.sdkman
+        key: ${{ runner.os }}-sdkman-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-sdkman-
+    - name: Install GraalVM with SDKMAN
+      run: |
+        curl -s "https://get.sdkman.io" | bash
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        sdk install java 21.2.0.r11-grl
+        java -version
+    - name: Install GraalVM Native Image
+      run: |
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        gu install native-image
+        native-image --version
+    - name: Install Maven, that uses GraalVM for later builds
+      run: |
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        sdk install maven
+        mvn --version
+    - name: Run GraalVM Native Image compilation of Spring Boot App (Maven version instead of ./compile.sh)
+      run: |
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        mvn -B clean package -P native --no-transfer-progress
+  native-image-compile-in-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-      - uses: docker-practice/actions-setup-docker@master
-        if: runner.os == 'MacOS'  
-      - name: Set up MongoDB
+      - name: Login into Heroku Container Registry first, so that we can push our Image later
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin registry.heroku.com
+
+      - name: Compile Native Image using Docker
+        run: docker build . --tag=registry.heroku.com/spring-boot-graal/web
+
+      - name: Push to Heroku Container Registry
+        run: docker push registry.heroku.com/spring-boot-graal/web
+
+      - name: Release Dockerized Native Spring Boot App on Heroku
+        run: ./heroku-release.sh spring-boot-graal
+
+      - name: Push to Docker Hub also, since automatic Builds there dont have anough RAM to do a docker build
         run: |
-          docker-compose up -d mongodb
-          sleep 10
-          docker ps -a
-
-      - name: Build Native Image & Run Application and FunctionalTests
-        run: |
-          mvn clean package -DskipTests -Pspring-native,build-native-image
-          ./target/com.example.demo.demoapplication &
-          sleep 10
-          mvn test -Pfunctional-test
-        if: runner.os != 'Windows'  
-
-      - name: Build Native Image & Run Application and FunctionalTests on Windows
-        run: |
-          mvn clean package -DskipTests -P "spring-native,build-native-image"
-          .\target\com.example.demo.demoapplication.exe &
-          sleep 10
-          mvn test -Pfunctional-test
-        if: runner.os == 'Windows'  
-
-      - name: Upload binary
-        uses: actions/upload-artifact@v2
-        with:
-          name: demoapplication-${{ matrix.os }}-${{ matrix.version }}
-          path: target/com.example.demo.demoapplication*  
+          echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+          docker tag registry.heroku.com/spring-boot-graal/web jonashackt/spring-boot-graalvm:latest
+          docker push jonashackt/spring-boot-graalvm:latest
