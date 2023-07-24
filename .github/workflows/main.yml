@@ -1,25 +1,25 @@
-name: GraalVM build
+name: GraalVM Native Image builds
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
+
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17.0.7'
-          distribution: 'graalvm' # See 'Options' for all available distributions
+          distribution: 'graalvm'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: test env
-        run: |
-          echo "GRAALVM_HOME: $GRAALVM_HOME"
-          echo "JAVA_HOME: $JAVA_HOME"
-          java --version
-          native-image --version
-      - name: Example step using Maven plugin  # https://graalvm.github.io/native-build-tools/latest/maven-plugin.html
+          native-image-job-reports: 'true'
+      - name: Build 
         run: mvn -U clean install -DskipTests && mvn native:compile -Pnative -DskipTests 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.2
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
         with:
-          name: build-art
+          name: artifact-${{ matrix.os }}
           path: darach-start/target
