@@ -1,4 +1,4 @@
-package com.xxl.job.executor.sample.frameless.JobHandler;
+package io.github.franzli347.JobHandler;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;

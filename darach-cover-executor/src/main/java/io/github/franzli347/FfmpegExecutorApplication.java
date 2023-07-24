@@ -1,7 +1,9 @@
 package io.github.franzli347;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
-import com.xxl.job.executor.sample.frameless.JobHandler.FfmpgeExecutor;
+
+import io.github.franzli347.JobHandler.FfmpgeExecutor;
+import io.github.franzli347.config.JobConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +16,7 @@ public class FfmpegExecutorApplication {
 
         try {
             // start
-            com.xxl.job.executor.sample.frameless.config.JobConfig.getInstance().initXxlJobExecutor();
+            JobConfig.getInstance().initXxlJobExecutor();
             XxlJobExecutor.registJobHandler("FfmpgeExecutor",new FfmpgeExecutor());
 
             // Blocks until interrupted
@@ -29,7 +31,7 @@ public class FfmpegExecutorApplication {
             logger.error(e.getMessage(), e);
         } finally {
             // destroy
-            com.xxl.job.executor.sample.frameless.config.JobConfig.getInstance().destroyXxlJobExecutor();
+            JobConfig.getInstance().destroyXxlJobExecutor();
         }
 
     }

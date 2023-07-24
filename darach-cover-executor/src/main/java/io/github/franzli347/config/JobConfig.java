@@ -1,4 +1,4 @@
-package com.xxl.job.executor.sample.frameless.config;
+package io.github.franzli347.config;
 
 
 import com.xxl.job.core.executor.impl.XxlJobSimpleExecutor;
@@ -13,11 +13,11 @@ import java.util.Properties;
  * @author xuxueli 2018-10-31 19:05:43
  */
 public class JobConfig {
-    private static Logger logger = LoggerFactory.getLogger(com.xxl.job.executor.sample.frameless.config.JobConfig.class);
+    private static Logger logger = LoggerFactory.getLogger(JobConfig.class);
 
 
-    private static com.xxl.job.executor.sample.frameless.config.JobConfig instance = new com.xxl.job.executor.sample.frameless.config.JobConfig();
-    public static com.xxl.job.executor.sample.frameless.config.JobConfig getInstance() {
+    private static JobConfig instance = new JobConfig();
+    public static JobConfig getInstance() {
         return instance;
     }
 
