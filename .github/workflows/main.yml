@@ -18,3 +18,8 @@ jobs:
           native-image --version
       - name: Example step using Maven plugin  # https://graalvm.github.io/native-build-tools/latest/maven-plugin.html
         run: mvn -U clean install -DskipTests && mvn native:compile -Pnative -DskipTests 
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: build-art
+          path: darach-start/target
