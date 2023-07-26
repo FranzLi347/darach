@@ -1,11 +1,11 @@
 package io.github.franzli347.darach.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.github.franzli347.darach.mapper.AnimateMapper;
 import io.github.franzli347.darach.model.dto.AnimateCreateDto;
 import io.github.franzli347.darach.model.dto.EpisodeDto;
 import io.github.franzli347.darach.model.entity.Animate;
 import io.github.franzli347.darach.model.entity.VedioPath;
+import io.github.franzli347.darach.repository.AnimateRepository;
+import io.github.franzli347.darach.repository.VideoPathRepository;
 import io.github.franzli347.darach.service.AnimateService;
 import io.github.franzli347.darach.service.VedioPathService;
 import io.github.franzli347.darach.utils.XxlJobTrigger;
@@ -23,20 +23,25 @@ import java.util.Optional;
  * @createDate 2023-06-17 07:47:28
  */
 @Service
-public class AnimateServiceImpl extends ServiceImpl<AnimateMapper, Animate>
-        implements AnimateService {
+public class AnimateServiceImpl implements AnimateService {
 
     @Resource
     VedioPathService vedioPathService;
 
     @Resource
+    VideoPathRepository videoPathRepository;
+
+    @Resource
     XxlJobTrigger xxlJobTrigger;
+
+    @Resource
+    AnimateRepository animateRepository;
 
     @Override
     public Boolean addNewAnimate(AnimateCreateDto dto) {
         Animate animate = new Animate();
         BeanUtils.copyProperties(dto, animate);
-        save(animate);
+        animateRepository.save(animate);
         List<EpisodeDto> episodeList = Optional.ofNullable(dto.getEpisodeList()).orElse(new ArrayList<>());
         List<VedioPath> insertData = new ArrayList<>();
         for (EpisodeDto episodeDto : episodeList) {
@@ -47,7 +52,7 @@ public class AnimateServiceImpl extends ServiceImpl<AnimateMapper, Animate>
             vedioPath.setEpisode(String.valueOf(episodeDto.getEpisode()));
             insertData.add(vedioPath);
         }
-        vedioPathService.saveBatch(insertData);
+        videoPathRepository.saveAll(insertData);
         return true;
     }
 }

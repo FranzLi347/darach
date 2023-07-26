@@ -1,12 +1,11 @@
 package io.github.franzli347.common.userloginchain;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.franzli347.common.AbstractHandler;
 import io.github.franzli347.constant.ErrorCode;
 import io.github.franzli347.exception.BusinessException;
-import io.github.franzli347.mapper.UserMapper;
 import io.github.franzli347.model.dto.UserDto;
 import io.github.franzli347.model.entity.User;
+import io.github.franzli347.repository.UserRepository;
 import io.github.franzli347.util.PasswordEncryptUtil;
 import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class PasswordValidator extends AbstractHandler {
 
     @Resource
-    private UserMapper mapper;
+    UserRepository userRepository;
 
     @Resource
     private PasswordEncryptUtil passwordEncryptUtil;
@@ -36,11 +35,9 @@ public class PasswordValidator extends AbstractHandler {
         String password = passwordEncryptUtil.encrypt(dto.getPassword());
         String email = dto.getEmail();
         // 查询数据库密码
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getEmail, email);
 
         User user = Optional
-                .ofNullable(mapper.selectOne(wrapper))
+                .ofNullable(userRepository.findByEmail(email))
                 .orElseThrow(() -> new BusinessException(ErrorCode.USERNAME_ERROR));
 
         String sysPassword = user.getPassword();

@@ -2,8 +2,6 @@ package io.github.franzli347.darach.model.vo;
 
 import cn.zhxu.bs.bean.DbField;
 import cn.zhxu.bs.bean.SearchBean;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +18,6 @@ public class AnimateVo {
     /**
      * id
      */
-    @TableId
     private Integer id;
 
     /**
@@ -71,6 +68,5 @@ public class AnimateVo {
     private Integer episodeNum;
 
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

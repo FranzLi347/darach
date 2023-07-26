@@ -1,24 +1,25 @@
 package io.github.franzli347.darach.model.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 
  * @TableName animate
  */
-@TableName(value ="animate")
+@Entity(name = "animate")
 @Data
-public class Animate implements Serializable {
+public class Animate {
     /**
      * id
      */
-    @TableId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -76,6 +77,5 @@ public class Animate implements Serializable {
      */
     private String isDelete;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

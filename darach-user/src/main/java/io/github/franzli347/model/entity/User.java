@@ -1,9 +1,6 @@
 package io.github.franzli347.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,13 +10,15 @@ import java.util.Date;
  * 
  * @TableName user
  */
-@TableName(value ="user")
+@Entity
 @Data
+@Table(name = "user")
 public class User implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -52,6 +51,6 @@ public class User implements Serializable {
      */
     private String idDelete;
 
-    @TableField(exist = false)
+
     private static final long serialVersionUID = 1L;
 }

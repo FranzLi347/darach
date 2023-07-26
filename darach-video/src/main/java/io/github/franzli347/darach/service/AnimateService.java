@@ -1,8 +1,6 @@
 package io.github.franzli347.darach.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.franzli347.darach.model.dto.AnimateCreateDto;
-import io.github.franzli347.darach.model.entity.Animate;
 
 /**
 * @author Franz
@@ -10,7 +8,7 @@ import io.github.franzli347.darach.model.entity.Animate;
 * @createDate 2023-06-17 07:47:28
 */
 
-public interface AnimateService extends IService<Animate> {
+public interface AnimateService  {
 
 
     Boolean addNewAnimate(AnimateCreateDto dto);

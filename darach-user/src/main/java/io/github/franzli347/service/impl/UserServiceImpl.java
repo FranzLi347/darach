@@ -6,13 +6,12 @@ import cn.hutool.captcha.ICaptcha;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.FastByteArrayOutputStream;
 import cn.hutool.core.util.IdUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.franzli347.common.userloginchain.LoginValidateChain;
 import io.github.franzli347.common.userloginchain.ValidatedCodeValidator;
 import io.github.franzli347.constant.UserRedisConstant;
-import io.github.franzli347.mapper.UserMapper;
 import io.github.franzli347.model.dto.UserDto;
 import io.github.franzli347.model.entity.User;
+import io.github.franzli347.repository.UserRepository;
 import io.github.franzli347.service.UserService;
 import io.github.franzli347.util.PasswordEncryptUtil;
 import jakarta.annotation.Resource;
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @createDate 2023-06-27 17:08:11
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Resource
     ICaptcha captcha;
@@ -44,6 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     ValidatedCodeValidator validatedCodeValidator;
+
+    @Resource
+    UserRepository userRepository;
 
 
     @Override
@@ -62,14 +64,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncryptUtil.encrypt(dto.getPassword()));
-        save(user);
+        userRepository.save(user);
         return true;
     }
 
     @Override
     public SaTokenInfo login(UserDto dto) {
         loginValidateChain.validate(dto);
-        User u = query().eq("email", dto.getEmail()).one();
+        // get user by email
+        User u = userRepository.findByEmail(dto.getEmail());
         StpUtil.login(dto.getEmail());
         StpUtil.getSession().set("loginInfo",u);
         return StpUtil.getTokenInfo();

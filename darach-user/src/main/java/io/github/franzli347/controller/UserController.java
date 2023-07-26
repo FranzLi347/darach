@@ -5,7 +5,6 @@ import io.github.franzli347.config.capture.CaptureImgProperties;
 import io.github.franzli347.model.dto.UserDto;
 import io.github.franzli347.service.UserService;
 import io.github.franzli347.utils.AccessLimit;
-import io.github.franzli347.utils.EncryptController;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,7 @@ public class UserController {
     }
 
     @PutMapping
-    @EncryptController(requestEncrypt = true, responseEncrypt = true)
+//    @EncryptController(requestEncrypt = true, responseEncrypt = true)
     public Boolean userRegister(@RequestBody UserDto dto) {
         return userService.userRegister(dto);
     }
