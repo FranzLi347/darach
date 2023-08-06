@@ -4,4 +4,8 @@ public interface OssSourceService {
 
     String getTempUrl(String name);
 
+    String getTempVideoUrl(String name);
+
+
+    String getOssUrl(String type);
 }

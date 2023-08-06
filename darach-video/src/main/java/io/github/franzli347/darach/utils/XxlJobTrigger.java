@@ -4,8 +4,9 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import io.github.franzli347.constant.ErrorCode;
 import io.github.franzli347.darach.config.minio.MinioProperties;
-import io.github.franzli347.exception.XxlJobException;
 import io.github.franzli347.darach.model.entity.JobParam;
+import io.github.franzli347.exception.XxlJobException;
+import io.github.franzli347.model.entity.Task;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,16 +23,18 @@ public class XxlJobTrigger{
     }
 
     private static final String TRIGGER_URL = "jobinfo/trigger";
-    public String triggerJob(String fileName){
+    public String triggerJob(Task task){
+        String fileName = task.getFileName();
         address = addSplit4url(address);
         String triggerUrl = address + TRIGGER_URL;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("id", jobId);
         JobParam jobParam = new JobParam();
+        jobParam.setTaskId(task.getId());
         jobParam.setEndpoint(minioProperties.getEndpoint());
         jobParam.setAccessKey(minioProperties.getAccessKey());
         jobParam.setSecretKey(minioProperties.getSecretKey());
-        jobParam.setBucketName(minioProperties.getBucketName());
+        jobParam.setBucketName(task.getBucketName());
         jobParam.setFileName(fileName);
         paramMap.put("executorParam", JSONUtil.toJsonStr(jobParam));
         paramMap.put("addressList", "");

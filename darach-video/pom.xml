@@ -44,6 +44,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.franzli347</groupId>
+            <artifactId>darach-auth</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>cn.zhxu</groupId>

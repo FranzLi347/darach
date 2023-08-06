@@ -1,6 +1,5 @@
 package io.github.franzli347.darach.model.vo;
 
-import cn.zhxu.bs.bean.DbField;
 import cn.zhxu.bs.bean.SearchBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,13 +58,6 @@ public class AnimateVo {
      * 更新时间
      */
     private LocalDateTime renewalTime;
-
-
-    /**
-     * 剧集数
-     */
-    @DbField("select count(*) from vedio_path where animate_id = animate.id")
-    private Integer episodeNum;
 
 
     private static final long serialVersionUID = 1L;

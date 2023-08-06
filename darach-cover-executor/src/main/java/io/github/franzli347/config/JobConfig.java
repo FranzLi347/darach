@@ -15,7 +15,6 @@ import java.util.Properties;
 public class JobConfig {
     private static Logger logger = LoggerFactory.getLogger(JobConfig.class);
 
-
     private static JobConfig instance = new JobConfig();
     public static JobConfig getInstance() {
         return instance;

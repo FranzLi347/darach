@@ -16,6 +16,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> exceptionHandler(Exception e) {
         log.error("exception", e);
-        return ResponseEntity.internalServerError().body(ResponseResult.error(e.getMessage()));
+        return ResponseEntity.internalServerError().body(e.getMessage());
+    }
+
+    @ExceptionHandler({PermissionException.class,LoginStatusException.class})
+    public ResponseEntity<Object> permissionExceptionHandler(BusinessException e) {
+        log.error("exception", e);
+        return ResponseEntity.status(403).body(ResponseResult.error(e.getMessage()));
     }
 }

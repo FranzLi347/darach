@@ -1,0 +1,17 @@
+password-encrypt:
+  enabled: true
+  algorithm: md5
+  salt: darach
+
+
+jwt:
+  header: Authorization
+  secret: darach
+  expiration: 604800
+
+capture-img:
+  enable: false
+  type: LineCaptcha
+  width: 100
+  height: 100
+

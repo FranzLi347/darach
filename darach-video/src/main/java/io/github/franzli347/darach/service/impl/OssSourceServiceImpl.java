@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author Franz
- *
  */
 @Service
 public class OssSourceServiceImpl implements OssSourceService {
@@ -36,11 +35,41 @@ public class OssSourceServiceImpl implements OssSourceService {
         }
         return minioClient
                 .getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
-                .bucket(minioProperties.getBucketName())
-                .object(name)
-                .method(Method.PUT)
-                .expiry(60 * 60 * 2)
-                .build());
+                        .bucket(minioProperties.getCoverBucketName())
+                        .object(name)
+                        .method(Method.PUT)
+                        .expiry(60 * 60 * 2)
+                        .build());
+    }
+
+    @Override
+    @SneakyThrows
+    public String getTempVideoUrl(String name) {
+        if (StrUtil.isBlankIfStr(name)) {
+            name = UUID.fastUUID().toString();
+        }
+        return minioClient
+                .getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                        .bucket(minioProperties.getVideoBucketName())
+                        .object(name)
+                        .method(Method.PUT)
+                        .expiry(60 * 60 * 2)
+                        .build());
+    }
+
+    @Override
+    public String getOssUrl(String type) {
+        switch (type) {
+            case "cover" -> {
+                return minioProperties.getEndpoint() + "/" + minioProperties.getCoverBucketName();
+            }
+            case "video" -> {
+               return minioProperties.getEndpoint() + "/" + minioProperties.getVideoBucketName();
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 }
 

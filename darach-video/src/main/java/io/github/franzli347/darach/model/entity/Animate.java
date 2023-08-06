@@ -1,12 +1,12 @@
 package io.github.franzli347.darach.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 
@@ -55,27 +55,33 @@ public class Animate {
     /**
      * 首播时间
      */
-    private Date premiereTime;
+    private LocalDateTime premiereTime;
 
     /**
      * 更新时间
      */
-    private Date renewalTime;
+    private LocalDateTime renewalTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 插入时间
      */
-    private Date insertTime;
+    private LocalDateTime insertTime;
 
     /**
      * 是否删除
      */
     private String isDelete;
 
+    @OneToMany
+    @JoinColumn(name = "animate_id")
+    @Fetch(FetchMode.JOIN)
+    private List<VideoPath> videoPaths;
+
+    
     private static final long serialVersionUID = 1L;
 }

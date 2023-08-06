@@ -1,21 +1,14 @@
 package io.github.franzli347.darach.service.impl;
 
-import io.github.franzli347.darach.model.dto.AnimateCreateDto;
-import io.github.franzli347.darach.model.dto.EpisodeDto;
+import io.github.franzli347.darach.model.dto.AnimateDto;
 import io.github.franzli347.darach.model.entity.Animate;
-import io.github.franzli347.darach.model.entity.VedioPath;
 import io.github.franzli347.darach.repository.AnimateRepository;
 import io.github.franzli347.darach.repository.VideoPathRepository;
 import io.github.franzli347.darach.service.AnimateService;
-import io.github.franzli347.darach.service.VedioPathService;
-import io.github.franzli347.darach.utils.XxlJobTrigger;
+import io.github.franzli347.exception.BusinessException;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Franz
@@ -26,33 +19,34 @@ import java.util.Optional;
 public class AnimateServiceImpl implements AnimateService {
 
     @Resource
-    VedioPathService vedioPathService;
+    AnimateRepository animateRepository;
 
     @Resource
     VideoPathRepository videoPathRepository;
 
-    @Resource
-    XxlJobTrigger xxlJobTrigger;
-
-    @Resource
-    AnimateRepository animateRepository;
-
     @Override
-    public Boolean addNewAnimate(AnimateCreateDto dto) {
+    public Boolean addNewAnimate(AnimateDto dto) {
         Animate animate = new Animate();
         BeanUtils.copyProperties(dto, animate);
         animateRepository.save(animate);
-        List<EpisodeDto> episodeList = Optional.ofNullable(dto.getEpisodeList()).orElse(new ArrayList<>());
-        List<VedioPath> insertData = new ArrayList<>();
-        for (EpisodeDto episodeDto : episodeList) {
-            VedioPath vedioPath = new VedioPath();
-            vedioPath.setAnimateId(animate.getId());
-            vedioPath.setFileName(episodeDto.getFileName());
-            xxlJobTrigger.triggerJob(episodeDto.getFileName());
-            vedioPath.setEpisode(String.valueOf(episodeDto.getEpisode()));
-            insertData.add(vedioPath);
+        return true;
+    }
+
+    @Override
+    public Boolean updateAnimate(AnimateDto dto, Integer id) {
+        Animate animate = new Animate();
+        BeanUtils.copyProperties(dto, animate);
+        animate.setId(id);
+        animateRepository.save(animate);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteAnimate(Integer id) {
+        if (!videoPathRepository.getAllByAnimateId(id).isEmpty()) {
+            throw new BusinessException(50000,"该动画下存在视频，无法删除");
         }
-        videoPathRepository.saveAll(insertData);
+        animateRepository.deleteById(id);
         return true;
     }
 }

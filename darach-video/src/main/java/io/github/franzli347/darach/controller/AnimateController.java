@@ -3,10 +3,9 @@ package io.github.franzli347.darach.controller;
 import cn.zhxu.bs.BeanSearcher;
 import cn.zhxu.bs.SearchResult;
 import cn.zhxu.bs.util.MapUtils;
-import io.github.franzli347.darach.model.dto.AnimateCreateDto;
+import io.github.franzli347.darach.model.dto.AnimateDto;
 import io.github.franzli347.darach.model.vo.AnimateVo;
 import io.github.franzli347.darach.service.AnimateService;
-import io.github.franzli347.utils.EncryptController;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import java.util.Map;
  * @author Franz Li
  */
 @RestController
-@RequestMapping("/animate")
+@RequestMapping("animate")
 @Slf4j
 public class AnimateController {
 
@@ -28,32 +27,31 @@ public class AnimateController {
     @Resource
     BeanSearcher beanSearcher;
 
-    @GetMapping
-    @EncryptController(responseEncrypt = true)
+    @GetMapping("page")
     public SearchResult<AnimateVo> query(HttpServletRequest request){
         SearchResult<AnimateVo> search = beanSearcher.search(AnimateVo.class, MapUtils.flat(request.getParameterMap()));
         log.debug(String.valueOf(search));
         return search;
     }
 
-    @GetMapping("episodeNum")
-    public Number getEpisodeNum(Integer id) {
-        return beanSearcher.searchCount(AnimateVo.class, Map.of("id",id));
-    }
-
-    @GetMapping("/detail")
-    @EncryptController(responseEncrypt = true)
-    public AnimateVo getDetail(Integer id) {
+    @GetMapping("{id}")
+    public AnimateVo getDetail(@PathVariable Integer id) {
         return beanSearcher.searchFirst(AnimateVo.class, Map.of("id",id));
     }
 
-    @PutMapping
-    public Boolean addNewAnimate(@RequestBody AnimateCreateDto dto) {
+    @PostMapping
+    public Boolean addAnimate(@RequestBody AnimateDto dto) {
         return animateService.addNewAnimate(dto);
     }
 
-    @GetMapping("/123")
-    public String test() {
-        return "123";
+    @PutMapping("{id}")
+    public Boolean updateAnimate(@RequestBody AnimateDto dto,@PathVariable Integer id) {
+        return animateService.updateAnimate(dto,id);
     }
+
+    @DeleteMapping("{id}")
+    public Boolean deleteAnimate(@PathVariable Integer id) {
+        return animateService.deleteAnimate(id);
+    }
+
 }

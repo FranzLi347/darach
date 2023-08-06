@@ -6,30 +6,19 @@ spring:
     url: jdbc:mysql://localhost:3306/darach?useSSL=false
     username: root
     password: 123456
-    servlet:
-      multipart:
-        max-file-size: 100MB
+
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-
-
-
   data:
     redis:
       host: localhost
       password: 123456
       database: 1
       port: 6379
-
-mybatis-plus:
-  global-config:
-    db-config:
-      logic-delete-field: isDelete
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-      id-type: auto
+      repositories:
+        enabled: false
 
 logging:
   level:
@@ -46,6 +35,7 @@ cors-config:
   path-pattern: "/**"
   max-age: 3600
 
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -58,14 +48,14 @@ springdoc:
       paths-to-match: '/**'
       packages-to-scan: io.github.franzli347.darach.controller
 
+
 knife4j:
   enable: true
   setting:
     language: zh_cn
 
+
 rsa:
   public-key-path: rsa/public_key.pem
   private-key-path: rsa/private_key.pem
 
-server:
-  port: 23711

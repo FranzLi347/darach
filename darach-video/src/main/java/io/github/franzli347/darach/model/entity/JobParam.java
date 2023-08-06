@@ -14,4 +14,5 @@ public class JobParam {
     private String bucketName;
 
     private String fileName;
+    private Integer taskId;
 }

@@ -14,9 +14,19 @@ public class OssController {
     @Resource
     private OssSourceService service;
 
-    @GetMapping("/{name}")
+    @GetMapping("/{type}")
+    public String ossUrl(@PathVariable String type) {
+        return service.getOssUrl(type);
+    }
+
+    @GetMapping("cover/{name}")
     public String tempUrl(@PathVariable String name) {
         return service.getTempUrl(name);
+    }
+
+    @GetMapping("video/{name}")
+    public String tempVideoUrl(@PathVariable String name) {
+        return service.getTempVideoUrl(name);
     }
 
 }

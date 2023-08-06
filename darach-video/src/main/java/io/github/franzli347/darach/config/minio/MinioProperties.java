@@ -25,5 +25,13 @@ public class MinioProperties {
      */
     private String secretKey;
 
-    private String bucketName;
+    /**
+     * 存储封面桶名称
+     */
+    private String coverBucketName;
+
+    /**
+     * 存储视频桶名称
+     */
+    private String videoBucketName;
 }

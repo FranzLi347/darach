@@ -1,6 +1,6 @@
 package io.github.franzli347.darach.service;
 
-import io.github.franzli347.darach.model.dto.AnimateCreateDto;
+import io.github.franzli347.darach.model.dto.AnimateDto;
 
 /**
 * @author Franz
@@ -11,5 +11,9 @@ import io.github.franzli347.darach.model.dto.AnimateCreateDto;
 public interface AnimateService  {
 
 
-    Boolean addNewAnimate(AnimateCreateDto dto);
+    Boolean addNewAnimate(AnimateDto dto);
+
+    Boolean updateAnimate(AnimateDto dto, Integer id);
+
+    Boolean deleteAnimate(Integer id);
 }

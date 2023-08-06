@@ -1,11 +1,11 @@
-
 xxl-job:
   address: http://localhost:8081/
-  jobId: 5
+  jobId: 2
 
 minio:
   endpoint: http://localhost:9000
   accessKey: minioadmin
   secretKey: minioadmin
-  bucketName: animate
+  coverBucketName: video-cover
+  VideoBucketName: video
 

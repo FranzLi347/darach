@@ -11,6 +11,7 @@ public enum ErrorCode {
     VALIDATED_CODE_EXPIRED_ERROR(40301, "验证码已过期"),
     VALIDATED_CODE_ERROR(40302, "验证码错误"),
     FORBIDDEN_ERROR(40300, "禁止访问"),
+    LOGIN_STATUS_ERROR(40303, "登录状态异常"),
     SYSTEM_ERROR(50000, "系统内部异常"),
     OPERATION_ERROR(50001, "操作失败"),
     USERNAME_ERROR(50002,"用户名不存在" ),
