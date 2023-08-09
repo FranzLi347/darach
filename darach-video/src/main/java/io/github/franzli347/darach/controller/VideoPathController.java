@@ -1,31 +1,42 @@
 package io.github.franzli347.darach.controller;
 
+import cn.zhxu.bs.BeanSearcher;
+import cn.zhxu.bs.SearchResult;
 import io.github.franzli347.darach.model.dto.CoverTaskCreateDto;
 import io.github.franzli347.darach.model.entity.VideoPath;
-import io.github.franzli347.darach.repository.VideoPathRepository;
 import io.github.franzli347.darach.service.VideoPathService;
-import io.github.franzli347.model.entity.Task;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("video")
 public class VideoPathController {
 
-    @Resource
     VideoPathService videoPathService;
 
-    private final VideoPathRepository videoPathRepository;
+    BeanSearcher beanSearcher;
 
-    public VideoPathController(VideoPathRepository videoPathRepository) {
-        this.videoPathRepository = videoPathRepository;
+
+    public VideoPathController(BeanSearcher beanSearcher,VideoPathService videoPathService){
+        this.beanSearcher = beanSearcher;
+        this.videoPathService = videoPathService;
     }
 
-    @GetMapping("/byAtId/{animateId}")
-    public List<VideoPath> getVideoPathByAnimateId(@PathVariable Integer animateId) {
-     return videoPathRepository.getAllByAnimateId(animateId);
+    @GetMapping("/byAtId/{animateId}/{page}/{size}")
+    public SearchResult<VideoPath> getVideoPathByAnimateId(@PathVariable Integer animateId,@PathVariable Integer page,@PathVariable Integer size) {
+      return  beanSearcher.search(VideoPath.class, Map.of("animateId",animateId,"page",page,"size",size));
+    }
+
+    @GetMapping("/EpoNumsData/{animateId}")
+    public List<Integer> getEpoNumsByAnimateId(@PathVariable Integer animateId) {
+        return videoPathService.getEpoNumsByAnimateId(animateId);
+    }
+
+    @GetMapping("pu/{animateId}/{epoNum}")
+    public String getVideoPathByAnimateIdAndEpoNum(@PathVariable Integer animateId,@PathVariable Integer epoNum) {
+        return videoPathService.getVideoPathByAnimateIdAndEpoNum(animateId,epoNum);
     }
 
     @GetMapping("{id}")
@@ -49,9 +60,7 @@ public class VideoPathController {
         return videoPathService.createVideoCoverTask(coverTaskCreateDto);
     }
 
-    @PostMapping("/responseTask/{id}")
-    public Boolean responseTask(@PathVariable Integer id, @RequestBody Task task) {
-        return videoPathService.responseTask(id,task);
-    }
+
+
 
 }

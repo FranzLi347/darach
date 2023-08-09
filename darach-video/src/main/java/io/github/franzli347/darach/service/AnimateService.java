@@ -1,6 +1,7 @@
 package io.github.franzli347.darach.service;
 
 import io.github.franzli347.darach.model.dto.AnimateDto;
+import io.github.franzli347.darach.model.dto.HomePageVideoData;
 
 /**
 * @author Franz
@@ -16,4 +17,7 @@ public interface AnimateService  {
     Boolean updateAnimate(AnimateDto dto, Integer id);
 
     Boolean deleteAnimate(Integer id);
+
+    HomePageVideoData getHomePageVideoData();
+
 }

@@ -1,6 +1,8 @@
 package io.github.franzli347.darach.service.impl;
 
+import io.github.franzli347.darach.constant.VideoRedisConstant;
 import io.github.franzli347.darach.model.dto.AnimateDto;
+import io.github.franzli347.darach.model.dto.HomePageVideoData;
 import io.github.franzli347.darach.model.entity.Animate;
 import io.github.franzli347.darach.repository.AnimateRepository;
 import io.github.franzli347.darach.repository.VideoPathRepository;
@@ -8,6 +10,7 @@ import io.github.franzli347.darach.service.AnimateService;
 import io.github.franzli347.exception.BusinessException;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +26,9 @@ public class AnimateServiceImpl implements AnimateService {
 
     @Resource
     VideoPathRepository videoPathRepository;
+
+    @Resource
+    RedisTemplate<String,HomePageVideoData> redisTemplate;
 
     @Override
     public Boolean addNewAnimate(AnimateDto dto) {
@@ -48,5 +54,10 @@ public class AnimateServiceImpl implements AnimateService {
         }
         animateRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public HomePageVideoData getHomePageVideoData() {
+        return redisTemplate.opsForValue().get(VideoRedisConstant.HOME_PAGE_VIDEO_DATA_KEY);
     }
 }

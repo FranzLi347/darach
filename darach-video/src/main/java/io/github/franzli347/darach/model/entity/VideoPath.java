@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -23,13 +25,18 @@ public class VideoPath {
     @Column(name = "animate_id")
     private Integer animateId;
 
+    @Column(name = "epo_num")
+    private Integer epoNum;
+
     @Column(name="url")
     private String url;
 
     @Column(name = "update_time")
+    @LastModifiedDate
     private LocalDateTime updateTime;
 
     @Column(name = "insert_time")
+    @CreatedDate
     private LocalDateTime insertTime;
 
     @Size(max = 255)

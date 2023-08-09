@@ -3,7 +3,6 @@ package io.github.franzli347.darach.service;
 
 import io.github.franzli347.darach.model.dto.CoverTaskCreateDto;
 import io.github.franzli347.darach.model.entity.VideoPath;
-import io.github.franzli347.model.entity.Task;
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ import java.util.List;
 */
 public interface VideoPathService {
 
-    List<VideoPath> getVideoPathByAnimateId(Integer animateId);
 
     Boolean saveVideoPath(VideoPath videoPath);
 
@@ -22,5 +20,7 @@ public interface VideoPathService {
 
     Boolean createVideoCoverTask(CoverTaskCreateDto videoPath);
 
-    Boolean responseTask(Integer id, Task task);
+    List<Integer> getEpoNumsByAnimateId(Integer animateId);
+
+    String getVideoPathByAnimateIdAndEpoNum(Integer animateId, Integer epoNum);
 }

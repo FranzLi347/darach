@@ -8,4 +8,6 @@ import java.util.List;
 public interface VideoPathRepository extends JpaRepository<VideoPath, Integer> {
 
     List<VideoPath> getAllByAnimateId(Integer animateId);
+
+    VideoPath getAllByAnimateIdAndEpoNum(Integer animateId,Integer epoNum);
 }

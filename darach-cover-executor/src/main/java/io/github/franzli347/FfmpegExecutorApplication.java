@@ -13,12 +13,10 @@ public class FfmpegExecutorApplication {
     private static Logger logger = LoggerFactory.getLogger(FfmpegExecutorApplication.class);
 
     public static void main(String[] args) {
-
         try {
             // start
             JobConfig.getInstance().initXxlJobExecutor();
             XxlJobExecutor.registJobHandler("FfmpgeExecutor",new FfmpgeExecutor());
-
             // Blocks until interrupted
             while (true) {
                 try {

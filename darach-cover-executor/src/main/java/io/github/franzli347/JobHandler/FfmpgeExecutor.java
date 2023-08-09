@@ -115,9 +115,14 @@ ffmpeg -threads 4 -re -fflags +genpts -i "%s" -s:0 1920x1080 -ac 2 -vcodec libx2
         for (File file : collect) {
             XxlJobHelper.log(logFormat.formatted("try upload " + file.getName() + " to oss"));
             try {
-                minioClient.uploadObject(io.minio.UploadObjectArgs.builder().bucket(jobParam.getBucketName()).object(file.getName()).filename(file.getAbsolutePath()).build());
+                minioClient
+                        .uploadObject(io.minio.UploadObjectArgs.builder()
+                                .bucket(jobParam.getBucketName())
+                                .object(file.getName())
+                                .filename(file.getAbsolutePath()).build());
             } catch (Exception e) {
                 XxlJobHelper.log(logFormat.formatted("upload file to oss failed"));
+                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }

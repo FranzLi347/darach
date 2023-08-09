@@ -4,9 +4,9 @@ import cn.zhxu.bs.BeanSearcher;
 import cn.zhxu.bs.SearchResult;
 import cn.zhxu.bs.util.MapUtils;
 import io.github.franzli347.darach.model.dto.AnimateDto;
+import io.github.franzli347.darach.model.dto.HomePageVideoData;
 import io.github.franzli347.darach.model.vo.AnimateVo;
 import io.github.franzli347.darach.service.AnimateService;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +21,25 @@ import java.util.Map;
 @Slf4j
 public class AnimateController {
 
-    @Resource
     AnimateService animateService;
 
-    @Resource
     BeanSearcher beanSearcher;
+
+
+    public AnimateController(AnimateService animateService,BeanSearcher beanSearcher){
+        this.animateService = animateService;
+        this.beanSearcher = beanSearcher;
+    }
 
     @GetMapping("page")
     public SearchResult<AnimateVo> query(HttpServletRequest request){
-        SearchResult<AnimateVo> search = beanSearcher.search(AnimateVo.class, MapUtils.flat(request.getParameterMap()));
-        log.debug(String.valueOf(search));
-        return search;
+        return beanSearcher.search(AnimateVo.class, MapUtils.flat(request.getParameterMap()));
+    }
+
+
+    @GetMapping("homePageVideoData")
+    public HomePageVideoData getHomePageVideoData() {
+        return animateService.getHomePageVideoData();
     }
 
     @GetMapping("{id}")
@@ -53,5 +61,7 @@ public class AnimateController {
     public Boolean deleteAnimate(@PathVariable Integer id) {
         return animateService.deleteAnimate(id);
     }
+
+
 
 }

@@ -1,19 +1,24 @@
 package io.github.franzli347.darach.model.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * 
  * @TableName animate
  */
 @Entity(name = "animate")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Animate {
     /**
      * id
@@ -62,14 +67,8 @@ public class Animate {
      */
     private LocalDateTime renewalTime;
 
-    /**
-     * 更新时间
-     */
     private LocalDateTime updateTime;
 
-    /**
-     * 插入时间
-     */
     private LocalDateTime insertTime;
 
     /**
@@ -77,11 +76,22 @@ public class Animate {
      */
     private String isDelete;
 
-    @OneToMany
-    @JoinColumn(name = "animate_id")
-    @Fetch(FetchMode.JOIN)
-    private List<VideoPath> videoPaths;
 
-    
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Animate animate = (Animate) o;
+        return getId() != null && Objects.equals(getId(), animate.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }
